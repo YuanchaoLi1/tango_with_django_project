@@ -2,7 +2,6 @@
 
 # Register your models here.
 
-from rango import views
 from django.contrib import admin
 from rango.models import Category, Page
 
