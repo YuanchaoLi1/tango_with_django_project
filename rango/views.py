@@ -19,10 +19,14 @@ def show_category(request, category_name_slug):
     return render(request, 'rango/category.html', context_dict)
 
 def index(request):
-    # Ex5
+    # Ex5/6
     category_list = Category.objects.order_by('-likes')[:5]
-    context_dict = {'categories': category_list}
+    page_list = Page.objects.order_by('-views')[:5]
 
+    context_dict = {}
+    context_dict['categories'] = category_list
+    context_dict['pages'] = page_list
+    
     return render(request, 'rango/index.html', context_dict)
 
 
