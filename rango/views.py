@@ -91,6 +91,11 @@ def index(request):
     return HttpResponse ("Rango says hey there partner! <br/> <a href='/rango/about/'>About</a>" )
 
 def about(request):  
+    # EX8
+    print(request.method)
+    print(request.user)
+    return render(request, 'rango/about.html', {})
+
     # Ex4
     # context_dictAbout = {'boldmessage': 'This tutorial has been put together by Yuanchao Li.'}
     # return render(request, 'rango/about.html')
