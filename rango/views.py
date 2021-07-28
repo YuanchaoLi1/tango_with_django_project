@@ -10,11 +10,11 @@ from django.shortcuts import redirect
 from rango.forms import PageForm
 from django.urls import reverse
 from rango.forms import UserForm, UserProfileForm
-from django.contrib.auth import authenticate, login 
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse
 from django.urls import reverse
 from django.shortcuts import redirect
-
+from django.contrib.auth.decorators import login_required
 
 # Ex9
 def register(request):
@@ -68,9 +68,17 @@ def user_login(request):
     else:
         return render(request, 'rango/login.html')
 
+@login_required
+def restricted(request):
+    return render(request, 'rango/restricted.html')
 
+@login_required
+def user_logout(request):
+    logout(request)
+    return redirect(reverse('rango:index'))
 
 # Ex7
+@login_required  #Ex9
 def add_category(request): 
     form = CategoryForm()
     
@@ -81,12 +89,13 @@ def add_category(request):
 
             cat = form.save(commit=True)
             print(cat, cat.slug)
-            return redirect('/rango/')
+            return redirect(reverse('rango:index')) #Ex9
         else:  
             print(form.errors)
 
     return render(request, 'rango/add_category.html', {'form': form})
 
+@login_required  #Ex9
 def add_page(request, category_name_slug):
     try:
         category = Category.objects.get(slug=category_name_slug)
@@ -94,7 +103,7 @@ def add_page(request, category_name_slug):
         category = None
 
     if category is None:
-        return redirect('/rango/')
+        return redirect(reverse('rango:index')) #Ex9
 
     form = PageForm()
 
